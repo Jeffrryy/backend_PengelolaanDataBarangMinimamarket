@@ -1,6 +1,6 @@
 import connection from '../config/config.js'
 
-const getAllBarangKeluar= async (req,res) => {
+const getAllBarang= async (req,res) => {
     const sql = "SELECT * FROM barang"
 
     connection.query(sql,(error,result) => {
@@ -15,7 +15,7 @@ const getAllBarangKeluar= async (req,res) => {
     })
 }
 
-const getFindBarangKeluarById = async (req,res) => {
+const getFindBarangById = async (req,res) => {
     const {id_barang} = req.body
     const sql = `SELECT * FROM barang WHERE id_barang = ${id_barang}`
  
@@ -31,7 +31,7 @@ const getFindBarangKeluarById = async (req,res) => {
     })
 }
 
-const postNewBarangKeluar = async (req,res) => {
+const postNewBarang = async (req,res) => {
     // const data ={...req.body} 
     const sql = "INSERT INTO barang SET ?"
 
@@ -44,7 +44,7 @@ const postNewBarangKeluar = async (req,res) => {
     })
 }
 
-const deleteBarangKeluar = async (req,res) => {
+const deleteBarang = async (req,res) => {
     const {id_barang} = req.body
         const sqlSearch = `SELECT * FROM barang WHERE id_barang =  ${id_barang}`
         const sqlDelete = `DELETE FROM barang WHERE id_barang =  ${id_barang}`
@@ -68,12 +68,11 @@ const deleteBarangKeluar = async (req,res) => {
         })
 }
 
-const updateBarangMasuk = async(req,res) => {
+const updateBarang = async(req,res) => {
     //query mysql
     const data ={...req.body}
-   
     const querySearch = `SELECT * From barang WHERE id_barang = ?`
-    const queryUpdate =` UPDATE barang SET ? WHERE id_barang =  ?`
+    const queryUpdate =` UPDATE barang SET ? WHERE id_barang =   ?`
 
    connection.query(querySearch,req.params.id,(err,rows,field) => {
        //error handling
@@ -83,7 +82,8 @@ const updateBarangMasuk = async(req,res) => {
 
     //jika id yang dimasukan yang ada di databsae
     if(rows.length){
-       connection.query(queryUpdate,[data,req.params.id],(err,rows,field) => {
+        console.log(rows)
+       connection.query(queryUpdate,[data,req.params.id ],(err,rows,field) => {
            if(err){
                return res.status(500).json({message:"ada kesalahan", error:err})
            }
@@ -96,4 +96,4 @@ const updateBarangMasuk = async(req,res) => {
 }
 
 //lanjut ubah kata databasemya
-export {getAllBarangKeluar,getFindBarangKeluarById,postNewBarangKeluar,deleteBarangKeluar}
+export {getAllBarang,getFindBarangById,postNewBarang,deleteBarang,updateBarang}
